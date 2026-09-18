@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import {AggregatorV3Interface} from
-    "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
 import {PriceConvertor} from "./priceConvertor.sol";
 
@@ -28,10 +27,7 @@ contract FundMe {
 
     // Allows users to fund the contract
     function fund() public payable {
-        require(
-            msg.value.getConversionRate(s_priceFeed) >= MINIMUM_USD,
-            "You need to spend more ETH!"
-        );
+        require(msg.value.getConversionRate(s_priceFeed) >= MINIMUM_USD, "You need to spend more ETH!");
 
         addressToAmountFunded[msg.sender] += msg.value;
 
@@ -54,11 +50,7 @@ contract FundMe {
 
     // Normal withdraw function
     function withdraw() public onlyOwner {
-        for (
-            uint256 funderIndex = 0;
-            funderIndex < funders.length;
-            funderIndex++
-        ) {
+        for (uint256 funderIndex = 0; funderIndex < funders.length; funderIndex++) {
             address funder = funders[funderIndex];
 
             addressToAmountFunded[funder] = 0;
@@ -66,9 +58,7 @@ contract FundMe {
 
         funders = new address[](0);
 
-        (bool callSuccess,) = payable(msg.sender).call{
-            value: address(this).balance
-        }("");
+        (bool callSuccess,) = payable(msg.sender).call{value: address(this).balance}("");
 
         require(callSuccess, "Call failed");
     }
@@ -79,11 +69,7 @@ contract FundMe {
         address[] memory fundersMem = funders;
 
         // Use memory array inside the loop
-        for (
-            uint256 funderIndex = 0;
-            funderIndex < fundersMem.length;
-            funderIndex++
-        ) {
+        for (uint256 funderIndex = 0; funderIndex < fundersMem.length; funderIndex++) {
             address funder = fundersMem[funderIndex];
 
             addressToAmountFunded[funder] = 0;
@@ -93,9 +79,7 @@ contract FundMe {
         funders = new address[](0);
 
         // Send all ETH to owner
-        (bool callSuccess,) = payable(msg.sender).call{
-            value: address(this).balance
-        }("");
+        (bool callSuccess,) = payable(msg.sender).call{value: address(this).balance}("");
 
         require(callSuccess, "Call failed");
     }

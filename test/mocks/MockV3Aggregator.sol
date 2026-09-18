@@ -5,10 +5,7 @@ contract MockV3Aggregator {
     uint8 public decimals;
     int256 public answer;
 
-    constructor(
-        uint8 _decimals,
-        int256 _answer
-    ) {
+    constructor(uint8 _decimals, int256 _answer) {
         decimals = _decimals;
         answer = _answer;
     }
@@ -17,23 +14,7 @@ contract MockV3Aggregator {
         return 4;
     }
 
-    function latestRoundData()
-        public
-        view
-        returns (
-            uint80,
-            int256,
-            uint256,
-            uint256,
-            uint80
-        )
-    {
-        return (
-            0,
-            answer,
-            0,
-            block.timestamp,
-            0
-        );
+    function latestRoundData() public view returns (uint80, int256, uint256, uint256, uint80) {
+        return (0, answer, 0, block.timestamp, 0);
     }
 }

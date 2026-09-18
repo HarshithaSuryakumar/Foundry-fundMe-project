@@ -34,6 +34,4 @@ contract FundMeTest is Test {
         vm.prank(fundMe.i_owner());
         fundMe.withdraw();
     }
-    
-   
 }
